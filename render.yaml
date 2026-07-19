@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: dtl-backend
+    runtime: python
+    plan: free
+    rootDir: core
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    startCommand: "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: FRONTEND_HOST
+        fromService:
+          type: web
+          name: dtl-frontend
+          property: host
+
+  - type: web
+    name: dtl-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: "npm install && npx vite build"
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_HOST
+        fromService:
+          type: web
+          name: dtl-backend
+          property: host
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

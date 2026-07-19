@@ -1,0 +1,24 @@
+{
+  "features": [
+    "meld_score",
+    "cold_ischemia_time"
+  ],
+  "scaler_mean": [
+    12.861895239709593,
+    313.46135831381736
+  ],
+  "scaler_scale": [
+    8.983654764296421,
+    92.84637802290574
+  ],
+  "coef": [
+    0.7943446481452611,
+    -0.8757559102689763
+  ],
+  "intercept": -0.639858766030422,
+  "cv_auc": 0.7321002386634845,
+  "n_events": 8,
+  "n_total": 427,
+  "trained_at": "2026-07-14T14:18:04.388685+00:00",
+  "caveat": "Exploratory pilot model trained on a single-center cohort with only 8 recorded deaths out of 427 patients. Not clinically validated \u2014 treat probability estimates as directional, not diagnostic."
+}
