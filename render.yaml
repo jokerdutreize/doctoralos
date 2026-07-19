@@ -21,14 +21,8 @@ services:
     name: dtl-frontend
     runtime: static
     rootDir: frontend
-    buildCommand: "npm install && npx vite build"
+    buildCommand: "npm install && VITE_API_BASE_URL=https://dtl-backend-naen.onrender.com/api npx vite build"
     staticPublishPath: dist
-    envVars:
-      - key: VITE_API_HOST
-        fromService:
-          type: web
-          name: dtl-backend
-          property: host
     routes:
       - type: rewrite
         source: /*
