@@ -212,17 +212,26 @@ function NavItem({ to, labelKey, Icon, end, badge, subItems }: NavItemDef) {
 }
 
 // ── Sidebar ────────────────────────────────────────────────────────────────────
-export default function Sidebar() {
+interface SidebarProps { collapsed?: boolean }
+
+export default function Sidebar({ collapsed = false }: SidebarProps) {
   const { selected } = usePatient()
   const { t } = useTranslation()
 
   return (
     <aside style={{
-      width: 'var(--sidebar-w, 220px)', minHeight: '100vh',
-      background: theme.color.surface, borderRight: `1px solid ${theme.color.border}`,
+      width: collapsed ? 0 : 'var(--sidebar-w, 220px)', minHeight: '100vh',
+      background: theme.color.surface,
+      borderRight: collapsed ? 'none' : `1px solid ${theme.color.border}`,
       display: 'flex', flexDirection: 'column', flexShrink: 0,
-      boxShadow: theme.shadow.sm, overflowY: 'auto',
+      boxShadow: collapsed ? 'none' : theme.shadow.sm,
+      overflow: 'hidden',
+      transition: 'width .18s ease, border-color .18s ease',
     }}>
+      <div style={{
+        width: 'var(--sidebar-w, 220px)', display: 'flex', flexDirection: 'column',
+        flex: 1, minHeight: '100vh', overflowY: 'auto',
+      }}>
       {/* Brand */}
       <div style={{ padding: '18px 18px 14px', borderBottom: `1px solid ${theme.color.border}`, flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -304,6 +313,7 @@ export default function Sidebar() {
             </div>
           </>
         )}
+      </div>
       </div>
     </aside>
   )

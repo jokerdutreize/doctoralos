@@ -44,6 +44,41 @@ function IconSearch() {
   )
 }
 
+// ── Sidebar toggle ─────────────────────────────────────────────────────────────
+function SidebarToggle({ collapsed, onClick }: { collapsed: boolean; onClick: () => void }) {
+  const { t } = useTranslation()
+  return (
+    <button
+      onClick={onClick}
+      title={collapsed ? t('topbar.showSidebar', { defaultValue: 'Show sidebar' }) : t('topbar.hideSidebar', { defaultValue: 'Hide sidebar' })}
+      style={{
+        width: 36, height: 36, flexShrink: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        borderRadius: theme.r.md,
+        background: 'transparent',
+        border: `1px solid transparent`,
+        color: theme.color.muted,
+        cursor: 'pointer', transition: 'all .15s',
+      }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLButtonElement).style.background = theme.color.bg
+        ;(e.currentTarget as HTMLButtonElement).style.borderColor = theme.color.border
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLButtonElement).style.background = 'transparent'
+        ;(e.currentTarget as HTMLButtonElement).style.borderColor = 'transparent'
+      }}
+    >
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="16" rx="2"/>
+        <line x1="10" y1="4" x2="10" y2="20"/>
+        {collapsed && <path d="M13 9l3 3-3 3"/>}
+      </svg>
+    </button>
+  )
+}
+
 // ── Filter types ───────────────────────────────────────────────────────────────
 type FilterStatus = 'all' | 'alive' | 'deceased'
 type FilterCP     = 'all' | 'A' | 'B' | 'C'
@@ -861,10 +896,15 @@ function UserMenu() {
 }
 
 // ── Topbar ─────────────────────────────────────────────────────────────────────
-export default function Topbar() {
+interface TopbarProps {
+  sidebarCollapsed: boolean
+  onToggleSidebar: () => void
+}
+
+export default function Topbar({ sidebarCollapsed, onToggleSidebar }: TopbarProps) {
   return (
     <header style={{
-      height: 56,
+      height: 56, minWidth: 0,
       background: theme.color.surface,
       borderBottom: `1px solid ${theme.color.border}`,
       display: 'flex', alignItems: 'center',
@@ -873,6 +913,7 @@ export default function Topbar() {
       flexShrink: 0,
       boxShadow: '0 1px 0 rgba(21,101,192,0.06)',
     }}>
+      <SidebarToggle collapsed={sidebarCollapsed} onClick={onToggleSidebar} />
       <GlobalSearch />
       <LanguageToggle />
       <ThemeToggle />
