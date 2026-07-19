@@ -1,6 +1,7 @@
 import type { DoctorProfile, AuthTokens } from '../types'
+import { BASE as API_BASE } from './client'
 
-const BASE = 'http://localhost:8000/api/auth'
+const BASE = `${API_BASE}/auth`
 
 async function req<T>(
   path: string,
